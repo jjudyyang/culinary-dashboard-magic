@@ -76,16 +76,16 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
   };
 
   return (
-    <div className="bg-gradient-to-r from-orange-100 to-amber-100 border-b-2 border-orange-300 p-4 relative">
+    <div className="bg-gradient-to-r from-blue-100 to-indigo-100 border-b-2 border-blue-300 p-4 relative">
       {/* Grainy texture overlay */}
       <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.8)_1px,transparent_0)] bg-[length:20px_20px]"></div>
       
       <div className="flex flex-wrap gap-6 items-start relative z-10">
         {/* Duration Filter - Vertical Layout */}
         <div className="flex flex-col gap-2">
-          <Label className="text-sm font-medium text-orange-900">Duration</Label>
+          <Label className="text-sm font-medium text-blue-900">Duration</Label>
           <Select value={selectedDuration} onValueChange={handleDurationChange}>
-            <SelectTrigger className="w-48 h-8 text-xs border-orange-300 focus:border-orange-500 bg-white/80">
+            <SelectTrigger className="w-48 h-8 text-xs border-blue-300 focus:border-blue-500 bg-white/80">
               <SelectValue placeholder="Select duration..." />
             </SelectTrigger>
             <SelectContent>
@@ -100,22 +100,22 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
 
         {/* Search Field - Vertical Layout */}
         <div className="flex flex-col gap-2 flex-1 min-w-48">
-          <Label className="text-sm font-medium text-orange-900">Search</Label>
+          <Label className="text-sm font-medium text-blue-900">Search</Label>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-500 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-blue-500 w-4 h-4" />
             <Input
               type="text"
               placeholder="Search recipes like Chef Ramsay..."
               value={searchValue}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="pl-10 h-8 border-orange-300 focus:border-orange-500 bg-white/80"
+              className="pl-10 h-8 border-blue-300 focus:border-blue-500 bg-white/80"
             />
           </div>
         </div>
 
         {/* Cuisine Multi-Select - Vertical Layout */}
         <div className="flex flex-col gap-2">
-          <Label className="text-sm font-medium text-orange-900">Cuisine</Label>
+          <Label className="text-sm font-medium text-blue-900">Cuisine</Label>
           <div className="flex flex-col gap-2">
             <Popover open={cuisinePopoverOpen} onOpenChange={setCuisinePopoverOpen}>
               <PopoverTrigger asChild>
@@ -123,7 +123,7 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
                   variant="outline"
                   role="combobox"
                   aria-expanded={cuisinePopoverOpen}
-                  className="w-48 h-8 justify-between text-xs border-orange-300 hover:border-orange-500 bg-white/80"
+                  className="w-48 h-8 justify-between text-xs border-blue-300 hover:border-blue-500 bg-white/80"
                 >
                   {selectedCuisines.length === 0 
                     ? "Select cuisines..." 
@@ -160,12 +160,12 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
             {selectedCuisines.length > 0 && (
               <div className="flex flex-wrap gap-1">
                 {selectedCuisines.slice(0, 2).map((cuisine) => (
-                  <Badge key={cuisine} variant="secondary" className="text-xs bg-orange-200 text-orange-900">
+                  <Badge key={cuisine} variant="secondary" className="text-xs bg-blue-200 text-blue-900">
                     {cuisine}
                   </Badge>
                 ))}
                 {selectedCuisines.length > 2 && (
-                  <Badge variant="secondary" className="text-xs bg-orange-200 text-orange-900">
+                  <Badge variant="secondary" className="text-xs bg-blue-200 text-blue-900">
                     +{selectedCuisines.length - 2}
                   </Badge>
                 )}
@@ -176,7 +176,7 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
 
         {/* My Recipes Toggle - Vertical Layout */}
         <div className="flex flex-col gap-2">
-          <Label htmlFor="my-recipes" className="text-sm font-medium text-orange-900">
+          <Label htmlFor="my-recipes" className="text-sm font-medium text-blue-900">
             My Recipes
           </Label>
           <Switch
@@ -192,7 +192,7 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
           <Button
             variant="outline"
             onClick={handleReset}
-            className="h-8 px-3 text-xs flex items-center gap-2 border-orange-300 hover:border-orange-500 hover:bg-orange-100 bg-white/80"
+            className="h-8 px-3 text-xs flex items-center gap-2 border-blue-300 hover:border-blue-500 hover:bg-blue-100 bg-white/80"
           >
             <RotateCcw className="w-4 h-4" />
             Reset
