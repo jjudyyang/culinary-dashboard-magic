@@ -8,8 +8,8 @@ import { sampleRecipes } from "@/data/sampleRecipes";
 
 const Index = () => {
   const [durationFilter, setDurationFilter] = useState<{ operator: string; value: number }>({
-    operator: "gte",
-    value: 30
+    operator: "range",
+    value: 45
   });
   const [searchFilter, setSearchFilter] = useState("");
   const [cuisineFilter, setCuisineFilter] = useState<string[]>([]);
@@ -18,9 +18,14 @@ const Index = () => {
   const filteredRecipes = useMemo(() => {
     return sampleRecipes.filter(recipe => {
       // Duration filter
-      const matchesDuration = durationFilter.operator === "gte" 
-        ? recipe.duration >= durationFilter.value
-        : recipe.duration <= durationFilter.value;
+      let matchesDuration = true;
+      if (durationFilter.operator === "gte") {
+        matchesDuration = recipe.duration >= durationFilter.value;
+      } else if (durationFilter.operator === "lte") {
+        matchesDuration = recipe.duration <= durationFilter.value;
+      } else if (durationFilter.operator === "range") {
+        matchesDuration = recipe.duration >= 30 && recipe.duration <= 60;
+      }
 
       // Search filter
       const matchesSearch = searchFilter === "" || 
@@ -53,12 +58,19 @@ const Index = () => {
     setMyRecipesOnly(enabled);
   };
 
+  const handleReset = () => {
+    setDurationFilter({ operator: "range", value: 45 });
+    setSearchFilter("");
+    setCuisineFilter([]);
+    setMyRecipesOnly(false);
+  };
+
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gray-50">
         <div className="flex-1 flex flex-col">
           <header className="bg-white border-b border-gray-200 p-4 flex items-center justify-between gap-4">
-            <h1 className="text-2xl font-bold text-blue-700">Recipe Manager</h1>
+            <h1 className="text-2xl font-bold text-blue-700">Cookify - Spotify but for your recipes</h1>
             <SidebarTrigger className="hover:bg-blue-50 hover:text-blue-700" />
           </header>
           
@@ -67,6 +79,7 @@ const Index = () => {
             onSearchChange={handleSearchChange}
             onCuisineChange={handleCuisineChange}
             onMyRecipesToggle={handleMyRecipesToggle}
+            onReset={handleReset}
           />
           
           <main className="flex-1 p-6">

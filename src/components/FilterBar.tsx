@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Search } from "lucide-react";
+import { Search, RotateCcw } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ interface FilterBarProps {
   onSearchChange: (search: string) => void;
   onCuisineChange: (cuisines: string[]) => void;
   onMyRecipesToggle: (enabled: boolean) => void;
+  onReset: () => void;
 }
 
 const cuisines = [
@@ -30,7 +31,7 @@ const durationRanges = [
   { label: "Long (> 60 min)", operator: "gte", value: 60 },
 ];
 
-export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, onMyRecipesToggle }: FilterBarProps) => {
+export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, onMyRecipesToggle, onReset }: FilterBarProps) => {
   const [selectedDuration, setSelectedDuration] = useState<string>("Medium (30-60 min)");
   const [searchValue, setSearchValue] = useState("");
   const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
@@ -62,6 +63,15 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
   const handleMyRecipesToggle = (enabled: boolean) => {
     setMyRecipesEnabled(enabled);
     onMyRecipesToggle(enabled);
+  };
+
+  const handleReset = () => {
+    setSelectedDuration("Medium (30-60 min)");
+    setSearchValue("");
+    setSelectedCuisines([]);
+    setMyRecipesEnabled(false);
+    setCuisinePopoverOpen(false);
+    onReset();
   };
 
   return (
@@ -170,6 +180,19 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
             checked={myRecipesEnabled}
             onCheckedChange={handleMyRecipesToggle}
           />
+        </div>
+
+        {/* Reset Button */}
+        <div className="flex flex-col gap-2">
+          <Label className="text-sm font-medium text-transparent">Reset</Label>
+          <Button
+            variant="outline"
+            onClick={handleReset}
+            className="h-8 px-3 text-xs flex items-center gap-2"
+          >
+            <RotateCcw className="w-4 h-4" />
+            Reset
+          </Button>
         </div>
       </div>
     </div>
