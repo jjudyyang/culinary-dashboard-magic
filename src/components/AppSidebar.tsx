@@ -1,5 +1,5 @@
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Plus, BookOpen, User } from "lucide-react";
 import {
   Sidebar,
@@ -32,12 +32,15 @@ const sidebarItems = [
 
 export function AppSidebar() {
   const [createCooklistDialogOpen, setCreateCooklistDialogOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleAction = (action: string) => {
     console.log(`Action triggered: ${action}`);
     
     if (action === "create-cooklist") {
       setCreateCooklistDialogOpen(true);
+    } else if (action === "my-profile") {
+      navigate("/profile");
     } else {
       // Here you would implement the actual functionality for other actions
     }
