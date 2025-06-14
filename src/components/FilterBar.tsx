@@ -26,13 +26,14 @@ const cuisines = [
 ];
 
 const durationRanges = [
+  { label: "No filter", operator: "none", value: 0 },
   { label: "Quick (< 30 min)", operator: "lte", value: 30 },
   { label: "Medium (30-60 min)", operator: "range", value: 45 },
   { label: "Long (> 60 min)", operator: "gte", value: 60 },
 ];
 
 export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, onMyRecipesToggle, onReset }: FilterBarProps) => {
-  const [selectedDuration, setSelectedDuration] = useState<string>("Medium (30-60 min)");
+  const [selectedDuration, setSelectedDuration] = useState<string>("No filter");
   const [searchValue, setSearchValue] = useState("");
   const [selectedCuisines, setSelectedCuisines] = useState<string[]>([]);
   const [myRecipesEnabled, setMyRecipesEnabled] = useState(false);
@@ -66,7 +67,7 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
   };
 
   const handleReset = () => {
-    setSelectedDuration("Medium (30-60 min)");
+    setSelectedDuration("No filter");
     setSearchValue("");
     setSelectedCuisines([]);
     setMyRecipesEnabled(false);
@@ -75,14 +76,14 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
   };
 
   return (
-    <div className="bg-white border-b border-gray-200 p-4">
+    <div className="bg-gradient-to-r from-orange-50 to-red-50 border-b-2 border-orange-200 p-4">
       <div className="flex flex-wrap gap-6 items-start">
         {/* Duration Filter - Vertical Layout */}
         <div className="flex flex-col gap-2">
-          <Label className="text-sm font-medium text-blue-700">Duration</Label>
+          <Label className="text-sm font-medium text-orange-800">Duration</Label>
           <Select value={selectedDuration} onValueChange={handleDurationChange}>
-            <SelectTrigger className="w-48 h-8 text-xs">
-              <SelectValue />
+            <SelectTrigger className="w-48 h-8 text-xs border-orange-200 focus:border-orange-400">
+              <SelectValue placeholder="Select duration..." />
             </SelectTrigger>
             <SelectContent>
               {durationRanges.map((range) => (
@@ -96,22 +97,22 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
 
         {/* Search Field - Vertical Layout */}
         <div className="flex flex-col gap-2 flex-1 min-w-48">
-          <Label className="text-sm font-medium text-blue-700">Search</Label>
+          <Label className="text-sm font-medium text-orange-800">Search</Label>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-400 w-4 h-4" />
             <Input
               type="text"
-              placeholder="Search recipes..."
+              placeholder="Search recipes like Chef Ramsay..."
               value={searchValue}
               onChange={(e) => handleSearchChange(e.target.value)}
-              className="pl-10 h-8"
+              className="pl-10 h-8 border-orange-200 focus:border-orange-400"
             />
           </div>
         </div>
 
         {/* Cuisine Multi-Select - Vertical Layout */}
         <div className="flex flex-col gap-2">
-          <Label className="text-sm font-medium text-blue-700">Cuisine</Label>
+          <Label className="text-sm font-medium text-orange-800">Cuisine</Label>
           <div className="flex flex-col gap-2">
             <Popover open={cuisinePopoverOpen} onOpenChange={setCuisinePopoverOpen}>
               <PopoverTrigger asChild>
@@ -119,7 +120,7 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
                   variant="outline"
                   role="combobox"
                   aria-expanded={cuisinePopoverOpen}
-                  className="w-48 h-8 justify-between text-xs"
+                  className="w-48 h-8 justify-between text-xs border-orange-200 hover:border-orange-400"
                 >
                   {selectedCuisines.length === 0 
                     ? "Select cuisines..." 
@@ -156,12 +157,12 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
             {selectedCuisines.length > 0 && (
               <div className="flex flex-wrap gap-1">
                 {selectedCuisines.slice(0, 2).map((cuisine) => (
-                  <Badge key={cuisine} variant="secondary" className="text-xs">
+                  <Badge key={cuisine} variant="secondary" className="text-xs bg-orange-100 text-orange-800">
                     {cuisine}
                   </Badge>
                 ))}
                 {selectedCuisines.length > 2 && (
-                  <Badge variant="secondary" className="text-xs">
+                  <Badge variant="secondary" className="text-xs bg-orange-100 text-orange-800">
                     +{selectedCuisines.length - 2}
                   </Badge>
                 )}
@@ -172,7 +173,7 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
 
         {/* My Recipes Toggle - Vertical Layout */}
         <div className="flex flex-col gap-2">
-          <Label htmlFor="my-recipes" className="text-sm font-medium text-blue-700">
+          <Label htmlFor="my-recipes" className="text-sm font-medium text-orange-800">
             My Recipes
           </Label>
           <Switch
@@ -188,7 +189,7 @@ export const FilterBar = ({ onDurationChange, onSearchChange, onCuisineChange, o
           <Button
             variant="outline"
             onClick={handleReset}
-            className="h-8 px-3 text-xs flex items-center gap-2"
+            className="h-8 px-3 text-xs flex items-center gap-2 border-orange-200 hover:border-orange-400 hover:bg-orange-50"
           >
             <RotateCcw className="w-4 h-4" />
             Reset

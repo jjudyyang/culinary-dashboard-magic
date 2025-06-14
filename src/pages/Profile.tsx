@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ArrowLeft, Home } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -196,37 +195,48 @@ export default function Profile() {
 
   if (selectedCookList) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50 p-6">
         <div className="max-w-6xl mx-auto">
           {/* Navigation buttons */}
           <div className="mb-8 flex justify-between items-center">
             <button 
               onClick={handleBackToProfile}
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
+              className="flex items-center gap-2 text-red-600 hover:text-red-800 transition-colors font-medium"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Profile
             </button>
             <Link 
               to="/"
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
+              className="flex items-center gap-2 text-red-600 hover:text-red-800 transition-colors font-medium"
             >
               <Home className="w-4 h-4" />
               Home
             </Link>
           </div>
 
-          {/* Cook list header */}
-          <div className="mb-8">
-            <h1 className="text-2xl font-bold text-blue-600">{selectedCookList.name}</h1>
-            <p className="text-gray-600">{selectedCookList.recipeCount} recipes</p>
+          {/* Cook list header with Spotify-like styling */}
+          <div className="mb-8 bg-gradient-to-r from-red-600 to-orange-600 text-white p-8 rounded-xl shadow-lg">
+            <div className="flex items-end gap-6">
+              <div className="w-32 h-32 bg-orange-400 rounded-lg flex items-center justify-center text-4xl font-bold shadow-lg">
+                🍽️
+              </div>
+              <div>
+                <p className="text-red-100 text-sm font-medium uppercase tracking-wide">Cooklist</p>
+                <h1 className="text-4xl font-bold mb-2">{selectedCookList.name}</h1>
+                <p className="text-red-100">{selectedCookList.recipeCount} recipes • Made with love</p>
+              </div>
+            </div>
           </div>
 
           {/* Cook list recipes using consistent RecipeCard */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {selectedCookList.recipes.map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} />
-            ))}
+          <div className="space-y-4">
+            <h2 className="text-xl font-semibold text-orange-800 mb-4">Recipes in this cooklist</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {selectedCookList.recipes.map((recipe) => (
+                <RecipeCard key={recipe.id} recipe={recipe} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -234,14 +244,17 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50 p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header with Home button */}
         <div className="mb-8 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-blue-600">Profile</h1>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-red-600">👨‍🍳 Profile</h1>
+            <p className="text-orange-600 italic">"Cooking with passion!"</p>
+          </div>
           <Link 
             to="/"
-            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
+            className="flex items-center gap-2 text-red-600 hover:text-red-800 transition-colors font-medium"
           >
             <Home className="w-4 h-4" />
             Home
@@ -249,21 +262,24 @@ export default function Profile() {
         </div>
 
         {/* Main Profile Card */}
-        <Card className="mb-8 border-2 border-blue-200">
+        <Card className="mb-8 border-2 border-orange-200 shadow-lg bg-gradient-to-r from-orange-50 to-red-50">
           <CardContent className="p-8">
             <div className="flex items-center gap-8">
               {/* Avatar */}
-              <Avatar className="w-32 h-32 border-4 border-blue-200">
+              <Avatar className="w-32 h-32 border-4 border-orange-300 shadow-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="text-2xl font-bold text-blue-600 bg-blue-100">
+                <AvatarFallback className="text-2xl font-bold text-red-600 bg-orange-100">
                   {user.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
 
               {/* User Info */}
               <div className="flex-1">
-                <h2 className="text-4xl font-bold text-blue-600 mb-2">{user.name}</h2>
-                <p className="text-lg text-gray-600">{user.cookifyLevel}</p>
+                <h2 className="text-4xl font-bold text-red-600 mb-2">{user.name}</h2>
+                <Badge className="text-lg px-4 py-2 bg-orange-100 text-orange-800 border-orange-300">
+                  🏅 {user.cookifyLevel}
+                </Badge>
+                <p className="text-orange-700 mt-4 italic">"Anyone can cook, but only the fearless can be great!"</p>
               </div>
             </div>
           </CardContent>
@@ -271,39 +287,47 @@ export default function Profile() {
 
         {/* My Recipes Carousel */}
         <div className="mb-8">
-          <h3 className="text-xl font-semibold text-blue-600 mb-4">My Recipes (Carousel)</h3>
+          <h3 className="text-xl font-semibold text-red-600 mb-4 flex items-center gap-2">
+            📚 My Recipes Collection
+          </h3>
           <Carousel className="w-full">
             <CarouselContent className="-ml-2 md:-ml-4">
               {userRecipes.map((recipe) => (
-                <CarouselItem key={recipe.id} className="pl-2 md:pl-4 md:basis-1/2 lg:basis-1/3">
+                <CarouselItem key={recipe.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
                   <RecipeCard recipe={recipe} />
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="left-4" />
-            <CarouselNext className="right-4" />
+            <CarouselPrevious className="left-4 bg-orange-100 hover:bg-orange-200 text-orange-800" />
+            <CarouselNext className="right-4 bg-orange-100 hover:bg-orange-200 text-orange-800" />
           </Carousel>
         </div>
 
         {/* My Cook Lists */}
         <div>
-          <h3 className="text-xl font-semibold text-blue-600 mb-4">My Cooklists</h3>
+          <h3 className="text-xl font-semibold text-red-600 mb-4 flex items-center gap-2">
+            🎵 My Cooklists
+          </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {cookLists.map((list) => (
               <Card 
                 key={list.id} 
-                className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-blue-200"
+                className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 border-orange-200 hover:border-red-300 bg-gradient-to-br from-orange-50 to-red-50 transform hover:scale-105"
                 onClick={() => handleCookListClick(list)}
               >
                 <CardContent className="p-6">
                   <div className="flex justify-between items-center">
                     <div>
-                      <h4 className="font-semibold text-lg text-gray-800">{list.name}</h4>
-                      <p className="text-sm text-gray-600">{list.recipeCount} recipes</p>
+                      <h4 className="font-semibold text-lg text-red-700 mb-1">{list.name}</h4>
+                      <p className="text-sm text-orange-600">{list.recipeCount} recipes</p>
+                      <p className="text-xs text-orange-500 italic mt-1">Click to view playlist</p>
                     </div>
-                    <Badge variant="outline" className="text-blue-600 border-blue-200">
-                      {list.recipeCount}
-                    </Badge>
+                    <div className="flex flex-col items-center">
+                      <Badge variant="outline" className="text-red-600 border-red-300 bg-red-50">
+                        {list.recipeCount}
+                      </Badge>
+                      <span className="text-2xl mt-2">🍽️</span>
+                    </div>
                   </div>
                 </CardContent>
               </Card>

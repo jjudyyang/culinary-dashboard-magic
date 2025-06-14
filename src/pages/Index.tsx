@@ -8,8 +8,8 @@ import { sampleRecipes } from "@/data/sampleRecipes";
 
 const Index = () => {
   const [durationFilter, setDurationFilter] = useState<{ operator: string; value: number }>({
-    operator: "range",
-    value: 45
+    operator: "none",
+    value: 0
   });
   const [searchFilter, setSearchFilter] = useState("");
   const [cuisineFilter, setCuisineFilter] = useState<string[]>([]);
@@ -26,6 +26,7 @@ const Index = () => {
       } else if (durationFilter.operator === "range") {
         matchesDuration = recipe.duration >= 30 && recipe.duration <= 60;
       }
+      // If operator is "none", don't filter by duration
 
       // Search filter
       const matchesSearch = searchFilter === "" || 
@@ -59,7 +60,7 @@ const Index = () => {
   };
 
   const handleReset = () => {
-    setDurationFilter({ operator: "range", value: 45 });
+    setDurationFilter({ operator: "none", value: 0 });
     setSearchFilter("");
     setCuisineFilter([]);
     setMyRecipesOnly(false);
@@ -67,11 +68,14 @@ const Index = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gray-50">
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50">
         <div className="flex-1 flex flex-col">
-          <header className="bg-white border-b border-gray-200 p-4 flex items-center justify-between gap-4">
-            <h1 className="text-2xl font-bold text-blue-700">Cookify - Spotify but for your recipes</h1>
-            <SidebarTrigger className="hover:bg-blue-50 hover:text-blue-700" />
+          <header className="bg-gradient-to-r from-red-600 to-orange-600 text-white border-b-2 border-red-700 p-4 flex items-center justify-between gap-4 shadow-lg">
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-bold">🍳 Cookify</h1>
+              <p className="text-red-100 text-sm italic">"Yes Chef!" meets "Anyone can cook"</p>
+            </div>
+            <SidebarTrigger className="hover:bg-red-500 hover:text-white text-red-100" />
           </header>
           
           <FilterBar
@@ -84,7 +88,7 @@ const Index = () => {
           
           <main className="flex-1 p-6">
             <div className="mb-4">
-              <p className="text-gray-600">
+              <p className="text-orange-700 font-medium">
                 Showing {filteredRecipes.length} of {sampleRecipes.length} recipes
               </p>
             </div>
@@ -97,8 +101,8 @@ const Index = () => {
             
             {filteredRecipes.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-500 text-lg">No recipes match your current filters.</p>
-                <p className="text-gray-400 mt-2">Try adjusting your search criteria.</p>
+                <p className="text-orange-600 text-lg font-medium">No recipes match your current filters.</p>
+                <p className="text-orange-500 mt-2">Even Gordon would be stumped! Try adjusting your search criteria.</p>
               </div>
             )}
           </main>
