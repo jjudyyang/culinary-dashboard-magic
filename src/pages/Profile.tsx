@@ -1,6 +1,6 @@
-
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
+import { ArrowLeft, Home } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -141,33 +141,34 @@ export default function Profile() {
     return (
       <div className="min-h-screen bg-gray-50 p-6">
         <div className="max-w-6xl mx-auto">
-          {/* Back button and header */}
-          <div className="mb-8">
+          {/* Navigation buttons */}
+          <div className="mb-8 flex justify-between items-center">
             <button 
               onClick={handleBackToProfile}
-              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4 transition-colors"
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               Back to Profile
             </button>
+            <Link 
+              to="/"
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
+            >
+              <Home className="w-4 h-4" />
+              Home
+            </Link>
+          </div>
+
+          {/* Cook list header */}
+          <div className="mb-8">
             <h1 className="text-2xl font-bold text-blue-600">{selectedCookList.name}</h1>
             <p className="text-gray-600">{selectedCookList.recipeCount} recipes</p>
           </div>
 
-          {/* Cook list recipes */}
+          {/* Cook list recipes using consistent RecipeCard */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {selectedCookList.recipes.map((recipe) => (
-              <Card key={recipe.id} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-4">
-                  <img 
-                    src={recipe.image} 
-                    alt={recipe.title}
-                    className="w-full h-32 object-cover rounded-lg mb-3"
-                  />
-                  <h3 className="font-semibold text-lg mb-1">{recipe.title}</h3>
-                  <p className="text-sm text-gray-600">{recipe.duration} minutes</p>
-                </CardContent>
-              </Card>
+              <RecipeCard key={recipe.id} recipe={recipe} />
             ))}
           </div>
         </div>
@@ -178,9 +179,16 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-2xl font-bold text-blue-600 mb-6">Profile</h1>
+        {/* Header with Home button */}
+        <div className="mb-8 flex justify-between items-center">
+          <h1 className="text-2xl font-bold text-blue-600">Profile</h1>
+          <Link 
+            to="/"
+            className="flex items-center gap-2 text-blue-600 hover:text-blue-800 transition-colors"
+          >
+            <Home className="w-4 h-4" />
+            Home
+          </Link>
         </div>
 
         {/* Main Profile Card */}
