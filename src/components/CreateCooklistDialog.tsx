@@ -9,6 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 
 interface CreateCooklistDialogProps {
   open: boolean;
@@ -17,11 +18,18 @@ interface CreateCooklistDialogProps {
 
 export const CreateCooklistDialog = ({ open, onOpenChange }: CreateCooklistDialogProps) => {
   const [cooklistName, setCooklistName] = useState("");
+  const { toast } = useToast();
 
   const handleCreate = () => {
     if (cooklistName.trim()) {
       console.log(`Creating cooklist: "${cooklistName}"`);
-      // Here you would typically make an API call to create the cooklist
+      
+      // Show success toast
+      toast({
+        title: "Cooklist Created Successfully! 📚",
+        description: `"${cooklistName}" is ready for your culinary collection!`,
+      });
+      
       setCooklistName("");
       onOpenChange(false);
     }
@@ -34,7 +42,7 @@ export const CreateCooklistDialog = ({ open, onOpenChange }: CreateCooklistDialo
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md">
+      <DialogContent className="max-w-md bg-gradient-to-br from-blue-50 to-indigo-50">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold text-blue-700">
             Create Cooklist
@@ -43,7 +51,7 @@ export const CreateCooklistDialog = ({ open, onOpenChange }: CreateCooklistDialo
         
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="cooklist-name" className="text-sm font-medium">
+            <Label htmlFor="cooklist-name" className="text-sm font-medium text-blue-800">
               Cooklist Name
             </Label>
             <Input
@@ -52,7 +60,7 @@ export const CreateCooklistDialog = ({ open, onOpenChange }: CreateCooklistDialo
               placeholder="Enter cooklist name..."
               value={cooklistName}
               onChange={(e) => setCooklistName(e.target.value)}
-              className="w-full"
+              className="w-full border-blue-200 focus:border-blue-400"
             />
           </div>
           
@@ -60,7 +68,7 @@ export const CreateCooklistDialog = ({ open, onOpenChange }: CreateCooklistDialo
             <Button
               variant="outline"
               onClick={handleCancel}
-              className="px-4 py-2"
+              className="px-4 py-2 border-blue-200 hover:bg-blue-50"
             >
               Cancel
             </Button>

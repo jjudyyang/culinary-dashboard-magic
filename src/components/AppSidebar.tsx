@@ -51,7 +51,7 @@ export function AppSidebar() {
 
   return (
     <>
-      <Sidebar side="right" className="border-l border-orange-200 bg-gradient-to-b from-orange-50 to-amber-50">
+      <Sidebar side="right" className="border-l border-blue-200 bg-gradient-to-b from-blue-50 to-indigo-50">
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupContent>
@@ -60,12 +60,12 @@ export function AppSidebar() {
                   <SidebarMenuItem key={item.action}>
                     <SidebarMenuButton 
                       onClick={() => handleAction(item.action)}
-                      className="w-full h-32 hover:bg-orange-100 hover:text-orange-700 transition-colors duration-200 flex-col gap-4 p-6"
+                      className="w-full h-32 hover:bg-blue-100 hover:text-blue-700 transition-colors duration-200 flex-col gap-4 p-6"
                     >
-                      <div className="w-16 h-16 rounded-full bg-orange-100 flex items-center justify-center hover:bg-orange-200 transition-colors">
-                        <item.icon className="w-8 h-8 text-orange-600" />
+                      <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center hover:bg-blue-200 transition-colors">
+                        <item.icon className="w-8 h-8 text-blue-600" />
                       </div>
-                      <span className="font-medium text-center text-orange-800">{item.title}</span>
+                      <span className="font-medium text-center text-blue-800">{item.title}</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

@@ -1,340 +1,216 @@
+
 import { useState } from "react";
-import { ArrowLeft, Home } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import { ArrowLeft, ChefHat, Clock, Globe } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { RecipeCard } from "@/components/RecipeCard";
 
-// Mock user data
-const mockUser = {
-  name: "John Doe",
-  cookifyLevel: "Intermediate Chef",
-  avatar: "/placeholder.svg",
-};
-
-// Mock user's recipes - expanded to 6 recipes
-const mockUserRecipes = [
-  {
-    id: 1,
-    title: "My Homemade Pasta",
-    image: "/placeholder.svg",
-    duration: 45,
-    cuisine: "Italian",
-    ingredients: ["Flour", "Eggs", "Salt", "Olive Oil"],
-    instructions: ["Mix flour and eggs", "Knead dough", "Roll and cut"],
-    isMyRecipe: true,
-  },
-  {
-    id: 2,
-    title: "Grandma's Apple Pie",
-    image: "/placeholder.svg",
-    duration: 90,
-    cuisine: "American",
-    ingredients: ["Apples", "Flour", "Sugar", "Butter", "Cinnamon"],
-    instructions: ["Prepare crust", "Mix filling", "Bake"],
-    isMyRecipe: true,
-  },
-  {
-    id: 3,
-    title: "Spicy Chicken Curry",
-    image: "/placeholder.svg",
-    duration: 60,
-    cuisine: "Indian",
-    ingredients: ["Chicken", "Coconut milk", "Curry powder", "Onions"],
-    instructions: ["Sauté onions", "Add chicken", "Simmer with spices"],
-    isMyRecipe: true,
-  },
-  {
-    id: 4,
-    title: "Mediterranean Salad",
-    image: "/placeholder.svg",
-    duration: 15,
-    cuisine: "Mediterranean",
-    ingredients: ["Tomatoes", "Cucumber", "Feta cheese", "Olive oil"],
-    instructions: ["Chop vegetables", "Add feta", "Drizzle with oil"],
-    isMyRecipe: true,
-  },
-  {
-    id: 5,
-    title: "Chocolate Chip Cookies",
-    image: "/placeholder.svg",
-    duration: 25,
-    cuisine: "American",
-    ingredients: ["Flour", "Butter", "Sugar", "Chocolate chips"],
-    instructions: ["Mix ingredients", "Form cookies", "Bake until golden"],
-    isMyRecipe: true,
-  },
-  {
-    id: 6,
-    title: "Thai Green Curry",
-    image: "/placeholder.svg",
-    duration: 40,
-    cuisine: "Thai",
-    ingredients: ["Green curry paste", "Coconut milk", "Vegetables", "Basil"],
-    instructions: ["Heat paste", "Add coconut milk", "Simmer with vegetables"],
-    isMyRecipe: true,
-  },
-];
-
-// Mock user's cook lists with complete recipe data
-const mockUserCookLists = [
+// Mock data - in a real app this would come from a database
+const mockCookLists = [
   { 
     id: 1, 
     name: "Weekend Meal Prep", 
-    recipeCount: 2,
+    recipeCount: 5,
     recipes: [
-      { 
-        id: 1, 
-        title: "Chicken Bowl", 
-        image: "/placeholder.svg", 
-        duration: 30,
-        cuisine: "Asian",
-        ingredients: ["Chicken breast", "Rice", "Vegetables", "Soy sauce"],
-        instructions: ["Cook chicken", "Prepare rice", "Steam vegetables", "Combine with sauce"]
+      {
+        id: 101,
+        title: "Gordon's Perfect Scrambled Eggs",
+        image: "https://images.unsplash.com/photo-1506084868230-bb9d95c24759?auto=format&fit=crop&w=500&h=300",
+        duration: 10,
+        cuisine: "British",
+        ingredients: ["3 eggs", "butter", "crème fraîche", "chives", "salt"],
+        instructions: ["Crack eggs into cold pan", "Add butter", "Stir constantly over low heat", "Finish with crème fraîche"],
+        isMyRecipe: true
       },
-      { 
-        id: 2, 
-        title: "Quinoa Salad", 
-        image: "/placeholder.svg", 
-        duration: 20,
-        cuisine: "Mediterranean",
-        ingredients: ["Quinoa", "Tomatoes", "Cucumber", "Lemon"],
-        instructions: ["Cook quinoa", "Chop vegetables", "Mix with lemon dressing"]
-      },
+      {
+        id: 102,
+        title: "Remy's Ratatouille",
+        image: "https://images.unsplash.com/photo-1572441713132-51c75654db73?auto=format&fit=crop&w=500&h=300",
+        duration: 45,
+        cuisine: "French",
+        ingredients: ["eggplant", "zucchini", "bell peppers", "tomatoes", "herbs"],
+        instructions: ["Slice vegetables thin", "Arrange in spiral", "Season with herbs", "Bake until tender"],
+        isMyRecipe: false
+      }
     ]
   },
   { 
     id: 2, 
     name: "Quick Dinners", 
-    recipeCount: 2,
+    recipeCount: 8,
     recipes: [
-      { 
-        id: 3, 
-        title: "Stir Fry", 
-        image: "/placeholder.svg", 
+      {
+        id: 201,
+        title: "5-Minute Pasta Aglio e Olio",
+        image: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5?auto=format&fit=crop&w=500&h=300",
         duration: 15,
-        cuisine: "Asian",
-        ingredients: ["Mixed vegetables", "Soy sauce", "Garlic", "Ginger"],
-        instructions: ["Heat oil", "Add garlic and ginger", "Stir fry vegetables"]
-      },
-      { 
-        id: 4, 
-        title: "Pasta Aglio", 
-        image: "/placeholder.svg", 
-        duration: 12,
         cuisine: "Italian",
-        ingredients: ["Pasta", "Garlic", "Olive oil", "Parsley"],
-        instructions: ["Cook pasta", "Sauté garlic", "Toss with oil and parsley"]
-      },
+        ingredients: ["spaghetti", "garlic", "olive oil", "red pepper flakes", "parsley"],
+        instructions: ["Boil pasta", "Sauté garlic in oil", "Toss with pasta", "Add herbs"],
+        isMyRecipe: true
+      }
     ]
   },
   { 
     id: 3, 
     name: "Holiday Favorites", 
-    recipeCount: 1,
+    recipeCount: 3,
     recipes: [
-      { 
-        id: 5, 
-        title: "Roast Turkey", 
-        image: "/placeholder.svg", 
-        duration: 180,
-        cuisine: "American",
-        ingredients: ["Turkey", "Herbs", "Butter", "Vegetables"],
-        instructions: ["Prepare turkey", "Season with herbs", "Roast in oven"]
-      },
+      {
+        id: 301,
+        title: "Christmas Beef Wellington",
+        image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=500&h=300",
+        duration: 120,
+        cuisine: "British",
+        ingredients: ["beef tenderloin", "puff pastry", "mushrooms", "prosciutto"],
+        instructions: ["Sear beef", "Wrap in mushroom duxelles", "Encase in pastry", "Bake until golden"],
+        isMyRecipe: true
+      }
     ]
   },
   { 
     id: 4, 
     name: "Healthy Options", 
-    recipeCount: 2,
+    recipeCount: 12,
     recipes: [
-      { 
-        id: 6, 
-        title: "Green Smoothie", 
-        image: "/placeholder.svg", 
-        duration: 5,
-        cuisine: "Healthy",
-        ingredients: ["Spinach", "Banana", "Apple", "Almond milk"],
-        instructions: ["Add ingredients to blender", "Blend until smooth"]
-      },
-      { 
-        id: 7, 
-        title: "Grilled Salmon", 
-        image: "/placeholder.svg", 
+      {
+        id: 401,
+        title: "Mediterranean Quinoa Bowl",
+        image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=500&h=300",
         duration: 25,
-        cuisine: "Seafood",
-        ingredients: ["Salmon fillet", "Lemon", "Herbs", "Olive oil"],
-        instructions: ["Season salmon", "Grill for 12-15 minutes", "Serve with lemon"]
-      },
+        cuisine: "Mediterranean",
+        ingredients: ["quinoa", "cucumber", "tomatoes", "feta", "olives"],
+        instructions: ["Cook quinoa", "Chop vegetables", "Mix with dressing", "Top with feta"],
+        isMyRecipe: false
+      }
     ]
   },
 ];
 
-export default function Profile() {
-  const [user] = useState(mockUser);
-  const [userRecipes] = useState(mockUserRecipes);
-  const [cookLists] = useState(mockUserCookLists);
-  const [selectedCookList, setSelectedCookList] = useState(null);
+const Profile = () => {
+  const navigate = useNavigate();
+  const [selectedCookList, setSelectedCookList] = useState<typeof mockCookLists[0] | null>(null);
 
-  const handleCookListClick = (cookList) => {
+  const handleBackClick = () => {
+    if (selectedCookList) {
+      setSelectedCookList(null);
+    } else {
+      navigate("/");
+    }
+  };
+
+  const handleCookListClick = (cookList: typeof mockCookLists[0]) => {
     setSelectedCookList(cookList);
   };
 
-  const handleBackToProfile = () => {
-    setSelectedCookList(null);
-  };
-
-  if (selectedCookList) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50 p-6">
-        <div className="max-w-6xl mx-auto">
-          {/* Navigation buttons */}
-          <div className="mb-8 flex justify-between items-center">
-            <button 
-              onClick={handleBackToProfile}
-              className="flex items-center gap-2 text-red-600 hover:text-red-800 transition-colors font-medium"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Profile
-            </button>
-            <Link 
-              to="/"
-              className="flex items-center gap-2 text-red-600 hover:text-red-800 transition-colors font-medium"
-            >
-              <Home className="w-4 h-4" />
-              Home
-            </Link>
-          </div>
-
-          {/* Cook list header with Spotify-like styling */}
-          <div className="mb-8 bg-gradient-to-r from-red-600 to-orange-600 text-white p-8 rounded-xl shadow-lg">
-            <div className="flex items-end gap-6">
-              <div className="w-32 h-32 bg-orange-400 rounded-lg flex items-center justify-center text-4xl font-bold shadow-lg">
-                🍽️
-              </div>
-              <div>
-                <p className="text-red-100 text-sm font-medium uppercase tracking-wide">Cooklist</p>
-                <h1 className="text-4xl font-bold mb-2">{selectedCookList.name}</h1>
-                <p className="text-red-100">{selectedCookList.recipeCount} recipes • Made with love</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Cook list recipes using consistent RecipeCard */}
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-orange-800 mb-4">Recipes in this cooklist</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {selectedCookList.recipes.map((recipe) => (
-                <RecipeCard key={recipe.id} recipe={recipe} />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50 p-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header with Home button */}
-        <div className="mb-8 flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-red-600">👨‍🍳 Profile</h1>
-            <p className="text-orange-600 italic">"Cooking with passion!"</p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-blue-50 to-indigo-50 relative">
+      {/* Grainy texture overlay */}
+      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.8)_1px,transparent_0)] bg-[length:20px_20px]"></div>
+      
+      <div className="relative z-10">
+        {/* Header */}
+        <header className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 shadow-xl">
+          <div className="flex items-center gap-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleBackClick}
+              className="hover:bg-blue-500 text-white"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Back
+            </Button>
+            <h1 className="text-2xl font-bold">
+              {selectedCookList ? selectedCookList.name : "My Profile"}
+            </h1>
           </div>
-          <Link 
-            to="/"
-            className="flex items-center gap-2 text-red-600 hover:text-red-800 transition-colors font-medium"
-          >
-            <Home className="w-4 h-4" />
-            Home
-          </Link>
-        </div>
+        </header>
 
-        {/* Main Profile Card */}
-        <Card className="mb-8 border-2 border-orange-200 shadow-lg bg-gradient-to-r from-orange-50 to-red-50">
-          <CardContent className="p-8">
-            <div className="flex items-center gap-8">
-              {/* Avatar */}
-              <Avatar className="w-32 h-32 border-4 border-orange-300 shadow-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="text-2xl font-bold text-red-600 bg-orange-100">
-                  {user.name.split(' ').map(n => n[0]).join('')}
-                </AvatarFallback>
-              </Avatar>
-
-              {/* User Info */}
-              <div className="flex-1">
-                <h2 className="text-4xl font-bold text-red-600 mb-2">{user.name}</h2>
-                <Badge className="text-lg px-4 py-2 bg-orange-100 text-orange-800 border-orange-300">
-                  🏅 {user.cookifyLevel}
-                </Badge>
-                <p className="text-orange-700 mt-4 italic">"Anyone can cook, but only the fearless can be great!"</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* My Recipes Carousel */}
-        <div className="mb-8">
-          <h3 className="text-xl font-semibold text-red-600 mb-4 flex items-center gap-2">
-            📚 My Recipes Collection
-          </h3>
-          <Carousel className="w-full">
-            <CarouselContent className="-ml-2 md:-ml-4">
-              {userRecipes.map((recipe) => (
-                <CarouselItem key={recipe.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
-                  <RecipeCard recipe={recipe} />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="left-4 bg-orange-100 hover:bg-orange-200 text-orange-800" />
-            <CarouselNext className="right-4 bg-orange-100 hover:bg-orange-200 text-orange-800" />
-          </Carousel>
-        </div>
-
-        {/* My Cook Lists */}
-        <div>
-          <h3 className="text-xl font-semibold text-red-600 mb-4 flex items-center gap-2">
-            🎵 My Cooklists
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {cookLists.map((list) => (
-              <Card 
-                key={list.id} 
-                className="hover:shadow-lg transition-all duration-300 cursor-pointer border-2 border-orange-200 hover:border-red-300 bg-gradient-to-br from-orange-50 to-red-50 transform hover:scale-105"
-                onClick={() => handleCookListClick(list)}
-              >
-                <CardContent className="p-6">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h4 className="font-semibold text-lg text-red-700 mb-1">{list.name}</h4>
-                      <p className="text-sm text-orange-600">{list.recipeCount} recipes</p>
-                      <p className="text-xs text-orange-500 italic mt-1">Click to view playlist</p>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <Badge variant="outline" className="text-red-600 border-red-300 bg-red-50">
-                        {list.recipeCount}
-                      </Badge>
-                      <span className="text-2xl mt-2">🍽️</span>
-                    </div>
+        <div className="p-6">
+          {!selectedCookList ? (
+            <>
+              {/* Profile Info */}
+              <div className="bg-white rounded-lg shadow-md p-6 mb-8 border border-blue-100">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+                    <ChefHat className="w-8 h-8 text-white" />
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-blue-800">Chef Linguini</h2>
+                    <p className="text-blue-600 italic">"Anyone can cook, but only the fearless can be great!"</p>
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-3 gap-4 text-center">
+                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                    <div className="text-2xl font-bold text-blue-700">23</div>
+                    <div className="text-blue-600 text-sm">Recipes Created</div>
+                  </div>
+                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                    <div className="text-2xl font-bold text-blue-700">4</div>
+                    <div className="text-blue-600 text-sm">Cook Lists</div>
+                  </div>
+                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                    <div className="text-2xl font-bold text-blue-700">156</div>
+                    <div className="text-blue-600 text-sm">Meals Cooked</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Cook Lists */}
+              <div>
+                <h3 className="text-xl font-bold text-blue-800 mb-4">My Cook Lists</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {mockCookLists.map((cookList) => (
+                    <div
+                      key={cookList.id}
+                      onClick={() => handleCookListClick(cookList)}
+                      className="bg-white rounded-lg shadow-md p-6 border border-blue-100 hover:shadow-lg transition-all duration-200 cursor-pointer hover:bg-blue-50 group"
+                    >
+                      <div className="flex items-center justify-between mb-3">
+                        <h4 className="font-semibold text-blue-800 group-hover:text-blue-900">
+                          {cookList.name}
+                        </h4>
+                        <span className="text-sm text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
+                          {cookList.recipeCount} recipes
+                        </span>
+                      </div>
+                      <p className="text-blue-600 text-sm italic">
+                        Click to view recipes in this collection
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* Cook List Details */}
+              <div className="bg-white rounded-lg shadow-md p-6 mb-6 border border-blue-100">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center">
+                    <ChefHat className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold text-blue-800">{selectedCookList.name}</h2>
+                    <p className="text-blue-600">{selectedCookList.recipeCount} recipes in this collection</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Recipes in Cook List */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {selectedCookList.recipes.map(recipe => (
+                  <RecipeCard key={recipe.id} recipe={recipe} />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Profile;

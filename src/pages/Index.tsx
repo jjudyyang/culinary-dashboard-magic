@@ -1,3 +1,4 @@
+
 import { useState, useMemo } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -71,17 +72,17 @@ const Index = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-gradient-to-br from-orange-100 via-orange-50 to-amber-50 relative">
+      <div className="min-h-screen flex w-full bg-gradient-to-br from-blue-100 via-blue-50 to-indigo-50 relative">
         {/* Grainy texture overlay */}
         <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.8)_1px,transparent_0)] bg-[length:20px_20px]"></div>
         
         <div className="flex-1 flex flex-col relative z-10">
-          <header className="bg-gradient-to-r from-orange-600 to-amber-600 text-white border-b-2 border-orange-700 p-4 flex items-center justify-between gap-4 shadow-xl">
+          <header className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white border-b-2 border-blue-700 p-4 flex items-center justify-between gap-4 shadow-xl">
             <div className="flex items-center gap-3">
               <h1 className="text-2xl font-bold">🍳 Cookify</h1>
-              <p className="text-orange-100 text-sm italic">"Yes Chef!" meets "Anyone can cook"</p>
+              <p className="text-blue-100 text-sm italic">"Yes Chef!" meets "Anyone can cook"</p>
             </div>
-            <SidebarTrigger className="hover:bg-orange-500 hover:text-white text-orange-100" />
+            <SidebarTrigger className="hover:bg-blue-500 hover:text-white text-blue-100" />
           </header>
           
           <FilterBar
@@ -94,7 +95,7 @@ const Index = () => {
           
           <main className="flex-1 p-6">
             <div className="mb-4">
-              <p className="text-orange-800 font-medium">
+              <p className="text-blue-800 font-medium">
                 Showing {filteredRecipes.length} of {allRecipes.length} recipes
               </p>
             </div>
@@ -107,8 +108,8 @@ const Index = () => {
             
             {filteredRecipes.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-orange-700 text-lg font-medium">No recipes match your current filters.</p>
-                <p className="text-orange-600 mt-2">Even Gordon would be stumped! Try adjusting your search criteria.</p>
+                <p className="text-blue-700 text-lg font-medium">No recipes match your current filters.</p>
+                <p className="text-blue-600 mt-2">Even Gordon would be stumped! Try adjusting your search criteria.</p>
               </div>
             )}
           </main>
