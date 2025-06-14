@@ -56,11 +56,10 @@ const Index = () => {
   return (
     <SidebarProvider>
       <div className="min-h-screen flex w-full bg-gray-50">
-        <AppSidebar />
         <div className="flex-1 flex flex-col">
-          <header className="bg-white border-b border-gray-200 p-4 flex items-center gap-4">
-            <SidebarTrigger className="hover:bg-blue-50 hover:text-blue-700" />
+          <header className="bg-white border-b border-gray-200 p-4 flex items-center justify-between gap-4">
             <h1 className="text-2xl font-bold text-blue-700">Recipe Manager</h1>
+            <SidebarTrigger className="hover:bg-blue-50 hover:text-blue-700" />
           </header>
           
           <FilterBar
@@ -91,6 +90,7 @@ const Index = () => {
             )}
           </main>
         </div>
+        <AppSidebar />
       </div>
     </SidebarProvider>
   );
