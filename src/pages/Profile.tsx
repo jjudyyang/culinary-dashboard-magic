@@ -20,7 +20,7 @@ const mockUser = {
   avatar: "/placeholder.svg",
 };
 
-// Mock user's recipes
+// Mock user's recipes - expanded to 6 recipes
 const mockUserRecipes = [
   {
     id: 1,
@@ -52,20 +52,128 @@ const mockUserRecipes = [
     instructions: ["Sauté onions", "Add chicken", "Simmer with spices"],
     isMyRecipe: true,
   },
+  {
+    id: 4,
+    title: "Mediterranean Salad",
+    image: "/placeholder.svg",
+    duration: 15,
+    cuisine: "Mediterranean",
+    ingredients: ["Tomatoes", "Cucumber", "Feta cheese", "Olive oil"],
+    instructions: ["Chop vegetables", "Add feta", "Drizzle with oil"],
+    isMyRecipe: true,
+  },
+  {
+    id: 5,
+    title: "Chocolate Chip Cookies",
+    image: "/placeholder.svg",
+    duration: 25,
+    cuisine: "American",
+    ingredients: ["Flour", "Butter", "Sugar", "Chocolate chips"],
+    instructions: ["Mix ingredients", "Form cookies", "Bake until golden"],
+    isMyRecipe: true,
+  },
+  {
+    id: 6,
+    title: "Thai Green Curry",
+    image: "/placeholder.svg",
+    duration: 40,
+    cuisine: "Thai",
+    ingredients: ["Green curry paste", "Coconut milk", "Vegetables", "Basil"],
+    instructions: ["Heat paste", "Add coconut milk", "Simmer with vegetables"],
+    isMyRecipe: true,
+  },
 ];
 
 // Mock user's cook lists
 const mockUserCookLists = [
-  { id: 1, name: "Weekend Meal Prep", recipeCount: 5 },
-  { id: 2, name: "Quick Dinners", recipeCount: 8 },
-  { id: 3, name: "Holiday Favorites", recipeCount: 3 },
-  { id: 4, name: "Healthy Options", recipeCount: 12 },
+  { 
+    id: 1, 
+    name: "Weekend Meal Prep", 
+    recipeCount: 5,
+    recipes: [
+      { id: 1, title: "Chicken Bowl", image: "/placeholder.svg", duration: 30 },
+      { id: 2, title: "Quinoa Salad", image: "/placeholder.svg", duration: 20 },
+    ]
+  },
+  { 
+    id: 2, 
+    name: "Quick Dinners", 
+    recipeCount: 8,
+    recipes: [
+      { id: 3, title: "Stir Fry", image: "/placeholder.svg", duration: 15 },
+      { id: 4, title: "Pasta Aglio", image: "/placeholder.svg", duration: 12 },
+    ]
+  },
+  { 
+    id: 3, 
+    name: "Holiday Favorites", 
+    recipeCount: 3,
+    recipes: [
+      { id: 5, title: "Roast Turkey", image: "/placeholder.svg", duration: 180 },
+    ]
+  },
+  { 
+    id: 4, 
+    name: "Healthy Options", 
+    recipeCount: 12,
+    recipes: [
+      { id: 6, title: "Green Smoothie", image: "/placeholder.svg", duration: 5 },
+      { id: 7, title: "Grilled Salmon", image: "/placeholder.svg", duration: 25 },
+    ]
+  },
 ];
 
 export default function Profile() {
   const [user] = useState(mockUser);
   const [userRecipes] = useState(mockUserRecipes);
   const [cookLists] = useState(mockUserCookLists);
+  const [selectedCookList, setSelectedCookList] = useState(null);
+
+  const handleCookListClick = (cookList) => {
+    setSelectedCookList(cookList);
+  };
+
+  const handleBackToProfile = () => {
+    setSelectedCookList(null);
+  };
+
+  if (selectedCookList) {
+    return (
+      <div className="min-h-screen bg-gray-50 p-6">
+        <div className="max-w-6xl mx-auto">
+          {/* Back button and header */}
+          <div className="mb-8">
+            <button 
+              onClick={handleBackToProfile}
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 mb-4 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Profile
+            </button>
+            <h1 className="text-2xl font-bold text-blue-600">{selectedCookList.name}</h1>
+            <p className="text-gray-600">{selectedCookList.recipeCount} recipes</p>
+          </div>
+
+          {/* Cook list recipes */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {selectedCookList.recipes.map((recipe) => (
+              <Card key={recipe.id} className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-4">
+                  <img 
+                    src={recipe.image} 
+                    alt={recipe.title}
+                    className="w-full h-32 object-cover rounded-lg mb-3"
+                  />
+                  <h3 className="font-semibold text-lg mb-1">{recipe.title}</h3>
+                  <p className="text-sm text-gray-600">{recipe.duration} minutes</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
@@ -117,7 +225,11 @@ export default function Profile() {
           <h3 className="text-xl font-semibold text-blue-600 mb-4">My Cooklists</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {cookLists.map((list) => (
-              <Card key={list.id} className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-blue-200">
+              <Card 
+                key={list.id} 
+                className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-blue-200"
+                onClick={() => handleCookListClick(list)}
+              >
                 <CardContent className="p-6">
                   <div className="flex justify-between items-center">
                     <div>
@@ -131,16 +243,6 @@ export default function Profile() {
                 </CardContent>
               </Card>
             ))}
-            
-            {/* Add New Cook List Card */}
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 border-dashed border-blue-300 hover:border-blue-400">
-              <CardContent className="p-6 flex items-center justify-center min-h-24">
-                <div className="text-center text-blue-600">
-                  <Plus className="w-8 h-8 mx-auto mb-2" />
-                  <p className="font-medium">Create New Cook List</p>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </div>
