@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { ArrowLeft, Home } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -84,41 +85,97 @@ const mockUserRecipes = [
   },
 ];
 
-// Mock user's cook lists
+// Mock user's cook lists with complete recipe data
 const mockUserCookLists = [
   { 
     id: 1, 
     name: "Weekend Meal Prep", 
-    recipeCount: 5,
+    recipeCount: 2,
     recipes: [
-      { id: 1, title: "Chicken Bowl", image: "/placeholder.svg", duration: 30 },
-      { id: 2, title: "Quinoa Salad", image: "/placeholder.svg", duration: 20 },
+      { 
+        id: 1, 
+        title: "Chicken Bowl", 
+        image: "/placeholder.svg", 
+        duration: 30,
+        cuisine: "Asian",
+        ingredients: ["Chicken breast", "Rice", "Vegetables", "Soy sauce"],
+        instructions: ["Cook chicken", "Prepare rice", "Steam vegetables", "Combine with sauce"]
+      },
+      { 
+        id: 2, 
+        title: "Quinoa Salad", 
+        image: "/placeholder.svg", 
+        duration: 20,
+        cuisine: "Mediterranean",
+        ingredients: ["Quinoa", "Tomatoes", "Cucumber", "Lemon"],
+        instructions: ["Cook quinoa", "Chop vegetables", "Mix with lemon dressing"]
+      },
     ]
   },
   { 
     id: 2, 
     name: "Quick Dinners", 
-    recipeCount: 8,
+    recipeCount: 2,
     recipes: [
-      { id: 3, title: "Stir Fry", image: "/placeholder.svg", duration: 15 },
-      { id: 4, title: "Pasta Aglio", image: "/placeholder.svg", duration: 12 },
+      { 
+        id: 3, 
+        title: "Stir Fry", 
+        image: "/placeholder.svg", 
+        duration: 15,
+        cuisine: "Asian",
+        ingredients: ["Mixed vegetables", "Soy sauce", "Garlic", "Ginger"],
+        instructions: ["Heat oil", "Add garlic and ginger", "Stir fry vegetables"]
+      },
+      { 
+        id: 4, 
+        title: "Pasta Aglio", 
+        image: "/placeholder.svg", 
+        duration: 12,
+        cuisine: "Italian",
+        ingredients: ["Pasta", "Garlic", "Olive oil", "Parsley"],
+        instructions: ["Cook pasta", "Sauté garlic", "Toss with oil and parsley"]
+      },
     ]
   },
   { 
     id: 3, 
     name: "Holiday Favorites", 
-    recipeCount: 3,
+    recipeCount: 1,
     recipes: [
-      { id: 5, title: "Roast Turkey", image: "/placeholder.svg", duration: 180 },
+      { 
+        id: 5, 
+        title: "Roast Turkey", 
+        image: "/placeholder.svg", 
+        duration: 180,
+        cuisine: "American",
+        ingredients: ["Turkey", "Herbs", "Butter", "Vegetables"],
+        instructions: ["Prepare turkey", "Season with herbs", "Roast in oven"]
+      },
     ]
   },
   { 
     id: 4, 
     name: "Healthy Options", 
-    recipeCount: 12,
+    recipeCount: 2,
     recipes: [
-      { id: 6, title: "Green Smoothie", image: "/placeholder.svg", duration: 5 },
-      { id: 7, title: "Grilled Salmon", image: "/placeholder.svg", duration: 25 },
+      { 
+        id: 6, 
+        title: "Green Smoothie", 
+        image: "/placeholder.svg", 
+        duration: 5,
+        cuisine: "Healthy",
+        ingredients: ["Spinach", "Banana", "Apple", "Almond milk"],
+        instructions: ["Add ingredients to blender", "Blend until smooth"]
+      },
+      { 
+        id: 7, 
+        title: "Grilled Salmon", 
+        image: "/placeholder.svg", 
+        duration: 25,
+        cuisine: "Seafood",
+        ingredients: ["Salmon fillet", "Lemon", "Herbs", "Olive oil"],
+        instructions: ["Season salmon", "Grill for 12-15 minutes", "Serve with lemon"]
+      },
     ]
   },
 ];
