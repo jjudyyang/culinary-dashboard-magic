@@ -1,9 +1,10 @@
 
 import { useState } from "react";
-import { Clock, ChefHat } from "lucide-react";
+import { Clock, ChefHat, Plus } from "lucide-react";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { RecipeDialog } from "./RecipeDialog";
+import { CookListDialog } from "./CookListDialog";
 
 interface Recipe {
   id: number;
@@ -21,10 +22,15 @@ interface RecipeCardProps {
 }
 
 export const RecipeCard = ({ recipe }: RecipeCardProps) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [recipeDialogOpen, setRecipeDialogOpen] = useState(false);
+  const [cookListDialogOpen, setCookListDialogOpen] = useState(false);
 
   const handleViewRecipe = () => {
-    setDialogOpen(true);
+    setRecipeDialogOpen(true);
+  };
+
+  const handleAddToCookList = () => {
+    setCookListDialogOpen(true);
   };
 
   return (
@@ -81,20 +87,33 @@ export const RecipeCard = ({ recipe }: RecipeCardProps) => {
           </div>
         </CardContent>
         
-        <CardFooter className="p-4 pt-0">
+        <CardFooter className="p-4 pt-0 flex gap-2">
           <button 
             onClick={handleViewRecipe}
-            className="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 py-2 px-4 rounded-lg transition-colors duration-200 font-medium"
+            className="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 py-2 px-4 rounded-lg transition-colors duration-200 font-medium"
           >
             View Recipe
+          </button>
+          <button 
+            onClick={handleAddToCookList}
+            className="flex-1 bg-green-50 hover:bg-green-100 text-green-700 py-2 px-4 rounded-lg transition-colors duration-200 font-medium flex items-center justify-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            Add to Cook List
           </button>
         </CardFooter>
       </Card>
 
       <RecipeDialog 
         recipe={recipe} 
-        open={dialogOpen} 
-        onOpenChange={setDialogOpen} 
+        open={recipeDialogOpen} 
+        onOpenChange={setRecipeDialogOpen} 
+      />
+      
+      <CookListDialog 
+        recipe={recipe} 
+        open={cookListDialogOpen} 
+        onOpenChange={setCookListDialogOpen} 
       />
     </>
   );
