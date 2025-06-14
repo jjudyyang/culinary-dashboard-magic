@@ -44,14 +44,12 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.action}>
                   <SidebarMenuButton 
                     onClick={() => handleAction(item.action)}
-                    className="w-full h-16 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 justify-start"
+                    className="w-full h-32 hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200 flex-col gap-4 p-6"
                   >
-                    <div className="flex items-center gap-3 w-full p-2">
-                      <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-                        <item.icon className="w-5 h-5 text-blue-600" />
-                      </div>
-                      <span className="font-medium">{item.title}</span>
+                    <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center hover:bg-blue-200 transition-colors">
+                      <item.icon className="w-8 h-8 text-blue-600" />
                     </div>
+                    <span className="font-medium text-center">{item.title}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
