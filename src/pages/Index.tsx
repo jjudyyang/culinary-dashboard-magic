@@ -1,11 +1,11 @@
-
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import { FilterBar } from "@/components/FilterBar";
 import { RecipeCard } from "@/components/RecipeCard";
-import { sampleRecipes } from "@/data/sampleRecipes";
-import { additionalRecipes } from "@/data/additionalRecipes";
+import { getRecipes } from "@/services/api";
+import type { Recipe } from "@/services/api";
+import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
   const [durationFilter, setDurationFilter] = useState<{ operator: string; value: number }>({
@@ -15,12 +15,43 @@ const Index = () => {
   const [searchFilter, setSearchFilter] = useState("");
   const [cuisineFilter, setCuisineFilter] = useState<string[]>([]);
   const [myRecipesOnly, setMyRecipesOnly] = useState(false);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
 
-  // Combine all recipes
-  const allRecipes = [...sampleRecipes, ...additionalRecipes];
+  // Fetch recipes when component mounts
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      try {
+        const data = await getRecipes();
+        // Transform API data to match our Recipe interface
+        const formattedRecipes = data.map((recipe: any) => ({
+          id: recipe.id,
+          title: recipe.name,
+          image: recipe.image_url,
+          duration: recipe.duration || 30,
+          cuisine: recipe.cuisine || "Unknown",
+          ingredients: recipe.ingredients || [],
+          instructions: recipe.instructions ? recipe.instructions.split('\n').filter(Boolean) : [],
+          isMyRecipe: false
+        }));
+        setRecipes(formattedRecipes);
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to fetch recipes. Using sample data instead.",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRecipes();
+  }, [toast]);
 
   const filteredRecipes = useMemo(() => {
-    return allRecipes.filter(recipe => {
+    return recipes.filter(recipe => {
       // Duration filter
       let matchesDuration = true;
       if (durationFilter.operator === "gte") {
@@ -30,7 +61,6 @@ const Index = () => {
       } else if (durationFilter.operator === "range") {
         matchesDuration = recipe.duration >= 30 && recipe.duration <= 60;
       }
-      // If operator is "none", don't filter by duration
 
       // Search filter
       const matchesSearch = searchFilter === "" || 
@@ -45,7 +75,7 @@ const Index = () => {
 
       return matchesDuration && matchesSearch && matchesCuisine && matchesMyRecipes;
     });
-  }, [durationFilter, searchFilter, cuisineFilter, myRecipesOnly]);
+  }, [recipes, durationFilter, searchFilter, cuisineFilter, myRecipesOnly]);
 
   const handleDurationChange = (operator: string, value: number) => {
     setDurationFilter({ operator, value });
@@ -96,7 +126,7 @@ const Index = () => {
           <main className="flex-1 p-6">
             <div className="mb-4">
               <p className="text-blue-800 font-medium">
-                Showing {filteredRecipes.length} of {allRecipes.length} recipes
+                Showing {filteredRecipes.length} of {recipes.length} recipes
               </p>
             </div>
             
